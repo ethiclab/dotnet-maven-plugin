@@ -203,7 +203,7 @@ public class VersionMojo extends AbstractMojo {
 		}
 	}
 
-	private String getDotNetCanonicalVersion(String ver) {
+	public String getDotNetCanonicalVersion(String ver) {
 		StringBuilder sb = new StringBuilder();
 		char[] arr = ver.toCharArray();
 		int count = 0;
@@ -212,9 +212,11 @@ public class VersionMojo extends AbstractMojo {
 				break;
 			if (Character.isDigit(c)) {
 				sb.append(c);
-			} else if (c == '.') {
+			} else if (count < 3 && c == '.') {
 				sb.append(c);
 				count++;
+			} else if (count == 3) {
+				break;
 			}
 		}
 		
