@@ -23,7 +23,7 @@ public class VersionMojo extends AbstractMojo {
 	/**
      * @since <since-text>
      */
-    @Parameter( property = "dotnet.newVersion", required = true )
+    @Parameter( property = "dotnet.newVersion", defaultValue = "${project.version}", required = false )
     private String newVersion;
 	
 	@Parameter(defaultValue = "${project}", readonly = true)
@@ -153,6 +153,17 @@ public class VersionMojo extends AbstractMojo {
 		f.renameTo(backup);
 		changeVersion(changed, backup);
 	}
+	
+	private String changeVersion(String line, String versionPrefix, String newVersion) {
+		String oldVersion = getVersion(line, versionPrefix);
+		return line.replace(oldVersion, newVersion);
+	}
+	
+	private String getVersion(String line, String versionPrefix) {
+		int ix = line.indexOf(versionPrefix) + versionPrefix.length();
+		int fx = line.indexOf(suffix);
+		return line.substring(ix, fx);
+	}
 
 	private void changeVersion(File f, File backup) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(backup)));
@@ -163,16 +174,19 @@ public class VersionMojo extends AbstractMojo {
 			do {
 				line = br.readLine();
 				if (line != null) {
-					if (line.indexOf(av) >= 0) {
-						pw.println(av + getDotNetCanonicalVersion(newVersion) + suffix);
+					if (hasVersion(line, av)) {
+						line = changeVersion(line, av, getDotNetCanonicalVersion(newVersion));
+						pw.println(line);
 						getLog().info(line);
 					}
-					else if (line.indexOf(afv) >= 0) {
-						pw.println(afv + getDotNetCanonicalVersion(newVersion) + suffix);
+					else if (hasVersion(line, afv)) {
+						line = changeVersion(line, afv, getDotNetCanonicalVersion(newVersion));
+						pw.println(line);
 						getLog().info(line);
 					}
-					else if (line.indexOf(aiv) >= 0) {
-						pw.println(aiv + newVersion + suffix);
+					else if (hasVersion(line, aiv)) {
+						line = changeVersion(line, aiv, newVersion);
+						pw.println(line);
 						getLog().info(line);
 					} else {
 						pw.println(line);
@@ -215,15 +229,15 @@ public class VersionMojo extends AbstractMojo {
 			do {
 				line = br.readLine();
 				if (line != null) {
-					if (line.indexOf(av) >= 0) {
+					if (hasVersion(line, av)) {
 						getLog().info(line);
 						return true;
 					}
-					else if (line.indexOf(afv) >= 0) {
+					else if (hasVersion(line, afv)) {
 						getLog().info(line);
 						return true;
 					}
-					else if (line.indexOf(aiv) >= 0) {
+					else if (hasVersion(line, aiv)) {
 						getLog().info(line);
 						return true;
 					}
@@ -236,5 +250,34 @@ public class VersionMojo extends AbstractMojo {
 		{
 			br.close();
 		}
+	}
+	
+	private boolean hasVersion(String line, String versionStart) {
+		if (line == null) {
+			return false;
+		}
+		String l = line.trim();
+		if (l.length() == 0) {
+			return false;
+		}
+		if (l.startsWith("//")) {
+			return false;
+		}
+		if (l.startsWith("/*")) {
+			return false;
+		}
+		int ix = l.indexOf(versionStart);
+		int iy = l.indexOf("//");
+		int iz = l.indexOf("/*");
+		if (ix >= 0) {
+			if (iy < 0 && iz < 0)
+				return true;
+			if (iy < ix)
+				return false;
+			if (iz < ix)
+				return false;
+			return true;
+		}
+		return false;
 	}
 }
