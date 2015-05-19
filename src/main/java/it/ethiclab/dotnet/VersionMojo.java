@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class VersionMojo extends AbstractMojo {
 			}
     		
     	} finally {
+    		log.info("DEFAULT CHARSET = " + Charset.defaultCharset().name());
     		log.info("VERSION END");
     	}
     }
@@ -154,7 +156,7 @@ public class VersionMojo extends AbstractMojo {
 
 	private void changeVersion(File f, File backup) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(backup)));
-		PrintWriter pw = new PrintWriter(f, project.getProperties().getProperty("project.build.sourceEncoding", "UTF-8"));
+		PrintWriter pw = new PrintWriter(f, project.getProperties().getProperty("project.build.sourceEncoding", Charset.defaultCharset().name()));
 		try
 		{
 			String line = null;
@@ -207,7 +209,6 @@ public class VersionMojo extends AbstractMojo {
 
 	private boolean hasAssemblyVersionInfo(File f) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
-		//PrintWriter pw = new PrintWriter(f.getAbsolutePath() + ".work", project.getProperties().getProperty("project.build.sourceEncoding", "UTF-8"));
 		try
 		{
 			String line = null;
@@ -226,17 +227,14 @@ public class VersionMojo extends AbstractMojo {
 						getLog().info(line);
 						return true;
 					}
-					//pw.println(line);
 				}
 				
 			} while (line != null);
-			//pw.flush();
 			return false;
 		}
 		finally
 		{
 			br.close();
-			//pw.close();
 		}
 	}
 }
