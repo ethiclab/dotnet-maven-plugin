@@ -58,4 +58,22 @@ public class UtilsTest {
 		int x = Utils.getLastNumber("RC12345");
 		Assert.assertEquals(12345, x);
 	}
+
+	@Test
+	public void test_getQualifierPrefix_SingleDigit() {
+		String x = Utils.getQualifierPrefix("RC1");
+		Assert.assertEquals("RC", x);
+	}
+
+	@Test
+	public void test_getQualifierPrefix_MultipleDigits() {
+		String x = Utils.getQualifierPrefix("RC12345");
+		Assert.assertEquals("RC", x);
+	}
+	
+	@Test
+	public void test_getQualifierPrefix_WithTrailingNumbers() {
+		String x = Utils.getQualifierPrefix("R123C12345");
+		Assert.assertEquals("R123C", x);
+	}
 }

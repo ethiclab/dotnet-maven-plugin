@@ -53,6 +53,23 @@ public class Utils {
 		}
 	}
 
+	public static String getQualifierPrefix(String s) {
+		String rev = reverse(s);
+		char[] arr = rev.toCharArray();
+
+		int remove = 0;
+		
+		for (char c : arr) {
+			if(Character.isDigit(c)) {
+				remove++;
+			} else {
+				break;
+			}
+		}
+		
+		return s.substring(0, s.length() - remove);
+	}
+
 	public static int getLastNumber(String s) {
 		String rev = reverse(s);
 		char[] arr = rev.toCharArray();
