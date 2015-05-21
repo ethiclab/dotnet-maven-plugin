@@ -40,4 +40,10 @@ public class UtilsTest {
 		boolean x = Utils.endsWithNumber("RC");
 		Assert.assertEquals(false, x);
 	}
+
+	@Test
+	public void test_reverse() {
+		String x = Utils.reverse("12345");
+		Assert.assertEquals("54321", x);
+	}
 }

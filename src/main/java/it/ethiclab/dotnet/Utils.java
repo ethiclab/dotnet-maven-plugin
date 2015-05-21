@@ -53,6 +53,17 @@ public class Utils {
 		}
 	}
 
+	public static String reverse(String s) {
+		char[] arr = s.toCharArray();
+		char[] r = new char[arr.length];
+		int j = arr.length;
+		for (int i = 0; i < arr.length; i++) {
+			j--;
+			r[j] = arr[i];
+		}
+		return new String(r);
+	}
+
 	public static boolean endsWithNumber(String s) {
 		char[] arr = s.toCharArray();
 		boolean r = false;
