@@ -22,6 +22,8 @@ public class Utils {
 				count++;
 			} else if (count == 3) {
 				break;
+			} else if (c != '.') {
+				break;
 			}
 		}
 		
