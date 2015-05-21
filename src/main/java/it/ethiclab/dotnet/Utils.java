@@ -85,6 +85,8 @@ public class Utils {
 			sb.append(getFormattedBuildNumber(buildToIncrement));
 		}
 		
+		sb.append(qualifier);
+		
 		return sb.toString();
 	}
 	
