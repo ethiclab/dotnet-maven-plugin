@@ -53,6 +53,46 @@ public class Utils {
 		}
 	}
 
+	public static String incrementLatest(String ver, String qualifier) {
+		StringBuilder sb = new StringBuilder();
+		
+		String root = getDotNetCanonicalVersion(ver);
+		boolean hasQualifier = ver.compareTo(root) != 0;
+		
+		String[] arr = root.split("\\.", 4);
+		for (int i = 0; i < arr.length - 1; i++) {
+			sb.append(arr[i]);
+			sb.append('.');
+		}
+		
+		int buildNumber = 0;
+		
+		if (hasQualifier) {
+			String qualifierPart = ver.substring(root.length());
+			if (endsWithNumber(qualifierPart)) {
+				sb = new StringBuilder();
+				buildNumber = getLastNumber(qualifierPart);
+				buildNumber++;
+				sb.append(root);
+				sb.append(getQualifierPrefix(qualifierPart));
+				sb.append(buildNumber);
+			} else {
+				String buildToIncrement = arr[arr.length - 1];
+				buildNumber = Integer.parseInt(buildToIncrement);
+				buildNumber++;
+				sb.append(buildNumber);
+				sb.append(qualifierPart);
+			}
+		} else {
+			String buildToIncrement = arr[arr.length - 1];
+			buildNumber = Integer.parseInt(buildToIncrement);
+			buildNumber++;
+			sb.append(buildNumber);
+		}
+		
+		return sb.toString();
+	}
+
 	public static String getQualifierPrefix(String s) {
 		String rev = reverse(s);
 		char[] arr = rev.toCharArray();

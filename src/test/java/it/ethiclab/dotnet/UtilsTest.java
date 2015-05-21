@@ -76,4 +76,46 @@ public class UtilsTest {
 		String x = Utils.getQualifierPrefix("R123C12345");
 		Assert.assertEquals("R123C", x);
 	}
+	
+	@Test
+	public void test_incrementLatest_NoQualifier4() {
+		String x = Utils.incrementLatest("1.0.0.0", "");
+		Assert.assertEquals("1.0.0.1", x);
+	}
+
+	@Test
+	public void test_incrementLatest_NoQualifier3() {
+		String x = Utils.incrementLatest("1.0.0", "");
+		Assert.assertEquals("1.0.1", x);
+	}
+
+	@Test
+	public void test_incrementLatest_NoQualifier2() {
+		String x = Utils.incrementLatest("1.0", "");
+		Assert.assertEquals("1.1", x);
+	}
+
+	@Test
+	public void test_incrementLatest_NoQualifier1() {
+		String x = Utils.incrementLatest("1", "");
+		Assert.assertEquals("2", x);
+	}
+
+	@Test
+	public void test_incrementLatest_QualifierSingleDigit() {
+		String x = Utils.incrementLatest("1.0.0.1-RC1", "");
+		Assert.assertEquals("1.0.0.1-RC2", x);
+	}
+
+	@Test
+	public void test_incrementLatest_QualifierTwoDigits() {
+		String x = Utils.incrementLatest("1.0.0.1-RC19", "");
+		Assert.assertEquals("1.0.0.1-RC20", x);
+	}
+
+	@Test
+	public void test_incrementLatest_QualifierNoDigits() {
+		String x = Utils.incrementLatest("1.0.0.1-RELEASE", "");
+		Assert.assertEquals("1.0.0.2-RELEASE", x);
+	}
 }
