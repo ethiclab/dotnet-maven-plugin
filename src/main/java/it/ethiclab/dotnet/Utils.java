@@ -52,4 +52,15 @@ public class Utils {
 			pw.close();
 		}
 	}
+
+	public static boolean endsWithNumber(String s) {
+		char[] arr = s.toCharArray();
+		boolean r = false;
+
+		for (char c : arr) {
+			r = Character.isDigit(c);
+		}
+		
+		return r;
+	}
 }
