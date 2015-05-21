@@ -43,7 +43,7 @@ public class NextMojo extends AbstractMojo {
 						throw new MojoExecutionException("version " + ver + " is already an SNAPSHOT.");
 					} else {
 						String nextVersion = Utils.incrementLatest(ver, qualifier);
-						Utils.writeLine(f, nextVersion);
+						Utils.writeLine(f, nextVersion + SNAPSHOT_SUFFIX);
 					}
 				} catch (IOException e) {
 					throw new MojoExecutionException(e.toString(), e);
