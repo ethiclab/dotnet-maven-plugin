@@ -175,12 +175,12 @@ public class VersionMojo extends AbstractMojo {
 				line = br.readLine();
 				if (line != null) {
 					if (hasVersion(line, av)) {
-						line = changeVersion(line, av, getDotNetCanonicalVersion(newVersion));
+						line = changeVersion(line, av, Utils.getDotNetCanonicalVersion(newVersion));
 						pw.println(line);
 						getLog().info(line);
 					}
 					else if (hasVersion(line, afv)) {
-						line = changeVersion(line, afv, getDotNetCanonicalVersion(newVersion));
+						line = changeVersion(line, afv, Utils.getDotNetCanonicalVersion(newVersion));
 						pw.println(line);
 						getLog().info(line);
 					}
@@ -201,26 +201,6 @@ public class VersionMojo extends AbstractMojo {
 			br.close();
 			pw.close();
 		}
-	}
-
-	public String getDotNetCanonicalVersion(String ver) {
-		StringBuilder sb = new StringBuilder();
-		char[] arr = ver.toCharArray();
-		int count = 0;
-		for (char c : arr) {
-			if (count == 4)
-				break;
-			if (Character.isDigit(c)) {
-				sb.append(c);
-			} else if (count < 3 && c == '.') {
-				sb.append(c);
-				count++;
-			} else if (count == 3) {
-				break;
-			}
-		}
-		
-		return sb.toString();
 	}
 
 	private boolean hasAssemblyVersionInfo(File f) throws IOException {
