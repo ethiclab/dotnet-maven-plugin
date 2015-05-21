@@ -67,32 +67,35 @@ public class Utils {
 			sb.append('.');
 		}
 		
-		int buildNumber = 0;
-		
 		if (hasQualifier) {
 			String qualifierPart = ver.substring(root.length());
 			if (endsWithNumber(qualifierPart)) {
 				sb = new StringBuilder();
-				buildNumber = getLastNumber(qualifierPart);
-				buildNumber++;
+				String buildToIncrement = getLastNumber(qualifierPart);
 				sb.append(root);
 				sb.append(getQualifierPrefix(qualifierPart));
-				sb.append(buildNumber);
+				sb.append(getFormattedBuildNumber(buildToIncrement));
 			} else {
 				String buildToIncrement = arr[arr.length - 1];
-				buildNumber = Integer.parseInt(buildToIncrement);
-				buildNumber++;
-				sb.append(buildNumber);
+				sb.append(getFormattedBuildNumber(buildToIncrement));
 				sb.append(qualifierPart);
 			}
 		} else {
 			String buildToIncrement = arr[arr.length - 1];
-			buildNumber = Integer.parseInt(buildToIncrement);
-			buildNumber++;
-			sb.append(buildNumber);
+			sb.append(getFormattedBuildNumber(buildToIncrement));
 		}
 		
 		return sb.toString();
+	}
+	
+	public static String getFormattedBuildNumber(String s) {
+		int buildNumber = Integer.parseInt(s);
+		buildNumber++;
+		if (s.startsWith("0")) {
+			return String.format("%0" + s.length() + "d", buildNumber);
+		} else {
+			return "" + buildNumber;
+		}
 	}
 
 	public static String getQualifierPrefix(String s) {
@@ -112,7 +115,7 @@ public class Utils {
 		return s.substring(0, s.length() - remove);
 	}
 
-	public static int getLastNumber(String s) {
+	public static String getLastNumber(String s) {
 		String rev = reverse(s);
 		char[] arr = rev.toCharArray();
 		StringBuilder sb = new StringBuilder();
@@ -125,7 +128,7 @@ public class Utils {
 			}
 		}
 		
-		return Integer.parseInt(sb.toString());
+		return sb.toString();
 	}
 
 	public static String reverse(String s) {
