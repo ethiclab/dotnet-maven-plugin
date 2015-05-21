@@ -53,6 +53,22 @@ public class Utils {
 		}
 	}
 
+	public static int getLastNumber(String s) {
+		String rev = reverse(s);
+		char[] arr = rev.toCharArray();
+		StringBuilder sb = new StringBuilder();
+
+		for (char c : arr) {
+			if(Character.isDigit(c)) {
+				sb.insert(0, c);
+			} else {
+				break;
+			}
+		}
+		
+		return Integer.parseInt(sb.toString());
+	}
+
 	public static String reverse(String s) {
 		char[] arr = s.toCharArray();
 		char[] r = new char[arr.length];

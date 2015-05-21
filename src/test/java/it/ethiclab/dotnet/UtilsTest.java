@@ -46,4 +46,16 @@ public class UtilsTest {
 		String x = Utils.reverse("12345");
 		Assert.assertEquals("54321", x);
 	}
+
+	@Test
+	public void test_getLastNumber_SingleDigit() {
+		int x = Utils.getLastNumber("RC1");
+		Assert.assertEquals(1, x);
+	}
+
+	@Test
+	public void test_getLastNumber_MultipleDigits() {
+		int x = Utils.getLastNumber("RC12345");
+		Assert.assertEquals(12345, x);
+	}
 }
