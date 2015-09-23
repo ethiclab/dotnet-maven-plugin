@@ -15,7 +15,7 @@
             org.apache.maven.plugins:maven-resources-plugin:resources
           </process-resources>
           <package>
-              ${project.groupId}:${project.artifactId}:init
+              com.github.ethiclab:dotnet-maven-plugin:init
             , org.apache.maven.plugins:maven-jar-plugin:jar
           </package>
           <install>
@@ -54,7 +54,7 @@
             org.apache.maven.plugins:maven-resources-plugin:resources
           </process-resources>
           <package>
-              it.ethiclab:dotnet-maven-plugin:init
+              com.github.ethiclab:dotnet-maven-plugin:init
             , org.apache.maven.plugins:maven-jar-plugin:jar
           </package>
           <install>
