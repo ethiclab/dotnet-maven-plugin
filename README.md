@@ -11,7 +11,7 @@ Quick Start.
       <plugin>
         <groupId>com.github.ethiclab</groupId>
         <artifactId>dotnet-maven-plugin</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <extensions>true</extensions>
       </plugin>
     </plugins>
