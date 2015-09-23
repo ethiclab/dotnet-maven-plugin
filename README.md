@@ -1,3 +1,7 @@
 # dotnet-maven-plugin
 
-This plugin is used by [byldan](https://github.com/ethiclab/byldan) in order to be able to use maven with byldan poms.
+This plugin allows to modify .NET assembly version by following some conventionA.
+
+See:
+
+https://github.com/montoyaedu/iwant
