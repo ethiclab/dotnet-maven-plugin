@@ -9,7 +9,7 @@
 
   <name>dotnet Maven Plugin</name>
 
-  <url>http://ethiclab.it/dotnet-maven-plugin</url>
+  <url>https://github.com/ethiclab/dotnet-maven-plugin</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
