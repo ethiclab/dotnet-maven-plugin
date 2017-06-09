@@ -1,16 +1,7 @@
 package it.ethiclab.dotnet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
@@ -19,6 +10,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Mojo(name = "version")
 public class VersionMojo extends AbstractMojo {
@@ -149,7 +146,7 @@ public class VersionMojo extends AbstractMojo {
 			}
     		
     	} finally {
-    		log.info("DEFAULT CHARSET = " + Charset.defaultCharset().name());
+    		log.info("SOURCE CHARSET = " + getSourceEncoding());
     		log.info("VERSION END");
     	}
     }
@@ -207,11 +204,21 @@ public class VersionMojo extends AbstractMojo {
 	}
 
 	private void changeVersion(File f, File backup) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(backup)));
-		PrintWriter pw = new PrintWriter(f, project.getProperties().getProperty("project.build.sourceEncoding", Charset.defaultCharset().name()));
+		BOMInputStream is = new BOMInputStream(new FileInputStream(backup));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is, getSourceEncoding()));
+		OutputStream os = new FileOutputStream(f);
+		PrintWriter pw = new PrintWriter(
+				new BufferedWriter(
+						new OutputStreamWriter(os, getSourceEncoding())
+				)
+		);
 		try
 		{
 			String line = null;
+			ByteOrderMark bom = is.getBOM();
+			if (bom != null) {
+				os.write(bom.getBytes());
+			}
 			do {
 				line = br.readLine();
 				if (line != null) {
@@ -244,8 +251,12 @@ public class VersionMojo extends AbstractMojo {
 		}
 	}
 
+	private String getSourceEncoding() {
+		return project.getProperties().getProperty("project.build.sourceEncoding", Charset.defaultCharset().name());
+	}
+
 	private boolean hasAssemblyVersionInfo(File f) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new BOMInputStream(new FileInputStream(f)), getSourceEncoding()));
 		try
 		{
 			String line = null;
