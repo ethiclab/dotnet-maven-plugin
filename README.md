@@ -2,6 +2,8 @@
 
 This plugin allows to modify .NET assembly version by following some conventions.
 
+[![Build Status](https://travis-ci.org/ethiclab/dotnet-maven-plugin.svg?branch=master)](https://travis-ci.org/ethiclab/dotnet-maven-plugin)
+
 Quick Start.
 ============
 
