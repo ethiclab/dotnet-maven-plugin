@@ -24,6 +24,3 @@ Quick Start.
   </pluginRepositories>
 `````
 
-See:
-
-https://github.com/montoyaedu/iwant
